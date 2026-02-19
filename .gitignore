@@ -1,0 +1,21 @@
+# Admin Console Gitignore
+
+# Configuration (keep example, ignore real config with secrets)
+config/config.php
+!config/config.example.php
+
+# Logs
+logs/
+*.log
+
+# System Files
+.DS_Store
+Thumbs.db
+
+# IDE Files
+.idea/
+.vscode/
+*.swp
+
+# Vendor (if composer is used later)
+vendor/
