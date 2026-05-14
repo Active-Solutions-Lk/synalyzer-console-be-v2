@@ -110,20 +110,22 @@ try {
         ]
     );
 
-    // Fetch package details for devices associated with this project
-    // We include the project's package name for all devices
+    // Fetch ALL devices for ALL projects linked to this analyzer
+    // Join project_types so each device gets its own correct package_name
     $devices = $db->query(
-        "SELECT device_key, log_duration, package_start_at, package_end_at, ? as package_name
-         FROM devices 
-         WHERE project_id = ?",
-        [$project['package_name'], $project['id']]
+        "SELECT d.device_key, d.log_duration, d.package_start_at, d.package_end_at,
+                pt.type AS package_name
+         FROM devices d
+         JOIN projects p  ON d.project_id   = p.id
+         JOIN project_types pt ON p.project_type_id = pt.id
+         WHERE p.analyzer_id = ?",
+        [$project['analyzer_id']]
     );
 
     // Send encrypted success response with package sync data
     ApiResponse::encryptedSuccess(
         $encryption,
         [
-            'status' => 'recorded',
             'package_sync' => $devices
         ],
         'Health stats updated successfully'

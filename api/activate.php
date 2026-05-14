@@ -13,6 +13,10 @@
  * 5. Server returns encrypted configuration data
  */
 
+// Start output buffer immediately — prevents "headers already sent" errors
+// caused by CRLF line endings on Linux or stray whitespace in included files
+ob_start();
+
 // Error reporting for development (disable in production)
 error_reporting(E_ALL);
 ini_set('display_errors', 0);
